@@ -38,6 +38,11 @@ const onFormSubmit = (e) => {
   }
 };
 
+const onMakeDecision = () => {
+  const index = Math.floor(Math.random() * app.options.length);
+  alert(app.options[index]);
+}
+
 const appRoot = document.getElementById('app');
 
 const renderTemplate = () => {
@@ -45,7 +50,7 @@ const renderTemplate = () => {
     <div>
     <h1>{app.title}</h1>
       {app.subtitle && <p>{app.subtitle}</p>}
-      <br/>
+      <button disabled={app.options && app.options.length === 0} onClick={onMakeDecision}>What shall I do next?</button>
       {optionsList()}
       <form onSubmit={onFormSubmit}>
         <input type="text" name="option"/>

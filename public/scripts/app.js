@@ -64,6 +64,11 @@ var onFormSubmit = function onFormSubmit(e) {
   }
 };
 
+var onMakeDecision = function onMakeDecision() {
+  var index = Math.floor(Math.random() * app.options.length);
+  alert(app.options[index]);
+};
+
 var appRoot = document.getElementById('app');
 
 var renderTemplate = function renderTemplate() {
@@ -80,7 +85,11 @@ var renderTemplate = function renderTemplate() {
       null,
       app.subtitle
     ),
-    React.createElement('br', null),
+    React.createElement(
+      'button',
+      { disabled: app.options && app.options.length === 0, onClick: onMakeDecision },
+      'What shall I do next?'
+    ),
     optionsList(),
     React.createElement(
       'form',
