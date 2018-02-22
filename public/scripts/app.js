@@ -1,80 +1,75 @@
 'use strict';
 
-// JSX content
-
-var navButtonStyle = {
-  margin: 15,
-  padding: 10
-};
-
-// template Indecision
 var app = {
   title: 'Indecision App',
   subtitle: 'Put your life in the hands of a computer',
-  options: ['One', 'Two']
+  options: ["First Option", "Second Option", "Third Option"]
 };
 
-// template Counter
-var count = 0;
-var addOne = function addOne() {
-  count++;
-  renderCounterApp();
-};
-var minusOne = function minusOne() {
-  count--;
-  renderCounterApp();
-};
-var reset = function reset() {
-  count = 0;
-  renderCounterApp();
+var optionsList = function optionsList() {
+  if (app.options && app.options.length > 0) {
+    return React.createElement(
+      'span',
+      null,
+      React.createElement(
+        'p',
+        null,
+        React.createElement(
+          'strong',
+          null,
+          'Your Options:'
+        )
+      ),
+      React.createElement(
+        'ul',
+        null,
+        app.options.map(function (option) {
+          return React.createElement(
+            'li',
+            { key: option },
+            option,
+            ' ',
+            React.createElement(
+              'button',
+              { onClick: function onClick() {
+                  app.options.splice(app.options.indexOf(option), 1);
+                  renderTemplate();
+                } },
+              'Delete'
+            )
+          );
+        })
+      )
+    );
+  } else {
+    return React.createElement(
+      'p',
+      null,
+      React.createElement(
+        'strong',
+        null,
+        'No options'
+      )
+    );
+  }
 };
 
-// rendering
+var onFormSubmit = function onFormSubmit(e) {
+  e.preventDefault();
+  var option = e.target.elements.option.value;
+  if (option) {
+    app.options.push(option);
+    e.target.elements.option.value = '';
+    renderTemplate();
+  }
+};
+
 var appRoot = document.getElementById('app');
 
-var renderCounterApp = function renderCounterApp() {
-  var templateCounter = React.createElement(
+var renderTemplate = function renderTemplate() {
+  var template = React.createElement(
     'div',
     null,
-    React.createElement(
-      'button',
-      { onClick: renderIndecisionApp, style: navButtonStyle },
-      'Render Indecision App'
-    ),
-    React.createElement(
-      'h1',
-      null,
-      'Count: ',
-      count
-    ),
-    React.createElement(
-      'button',
-      { onClick: addOne },
-      '+1'
-    ),
-    React.createElement(
-      'button',
-      { onClick: minusOne },
-      '-1'
-    ),
-    React.createElement(
-      'button',
-      { onClick: reset },
-      'reset'
-    )
-  );
-  ReactDOM.render(templateCounter, appRoot);
-};
-
-var renderIndecisionApp = function renderIndecisionApp() {
-  var templateIndecision = React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'button',
-      { onClick: renderCounterApp, style: navButtonStyle },
-      'Render Counter App'
-    ),
     React.createElement(
       'h1',
       null,
@@ -85,27 +80,20 @@ var renderIndecisionApp = function renderIndecisionApp() {
       null,
       app.subtitle
     ),
+    React.createElement('br', null),
+    optionsList(),
     React.createElement(
-      'p',
-      null,
-      app.options.length > 0 ? 'Here are your options' : 'No options'
-    ),
-    React.createElement(
-      'ol',
-      null,
+      'form',
+      { onSubmit: onFormSubmit },
+      React.createElement('input', { type: 'text', name: 'option' }),
       React.createElement(
-        'li',
+        'button',
         null,
-        'Item one'
-      ),
-      React.createElement(
-        'li',
-        null,
-        'Item two'
+        'Add Option'
       )
     )
   );
-  ReactDOM.render(templateIndecision, appRoot);
+  ReactDOM.render(template, appRoot);
 };
 
-renderCounterApp();
+renderTemplate();

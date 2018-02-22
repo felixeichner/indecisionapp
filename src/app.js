@@ -1,64 +1,59 @@
-// JSX content
-
-const navButtonStyle = {
-  margin: 15,
-  padding: 10
-};
-
-// template Indecision
 const app = {
   title: 'Indecision App',
   subtitle: 'Put your life in the hands of a computer',
-  options: ['One', 'Two']
+  options: ["First Option", "Second Option", "Third Option"]
 };
 
+const optionsList = () => {
+  if (app.options && app.options.length > 0) {
+    return (
+      <span>
+        <p><strong>Your Options:</strong></p>
+        <ul>
+          {app.options.map((option) => {
+            return (
+              <li key={option}>
+                {option} <button onClick={() => {
+                  app.options.splice(app.options.indexOf(option), 1);
+                  renderTemplate();
+                }}>Delete</button>
+              </li>
+            )
+          })}
+        </ul>
+      </span>
+    )
+  } else {
+    return <p><strong>No options</strong></p>;
+  }
+}
 
-// template Counter
-let count = 0;
-const addOne = () => {
-  count++;
-  renderCounterApp();
-};
-const minusOne = () => {
-  count--;
-  renderCounterApp();
-};
-const reset = () => {
-  count = 0;
-  renderCounterApp();
+const onFormSubmit = (e) => {
+  e.preventDefault();
+  const option = e.target.elements.option.value;
+  if (option) {
+    app.options.push(option);
+    e.target.elements.option.value = '';
+    renderTemplate();
+  }
 };
 
-
-// rendering
 const appRoot = document.getElementById('app');
 
-const renderCounterApp = () => {
-  const templateCounter = (
+const renderTemplate = () => {
+  const template = (
     <div>
-      <button onClick={renderIndecisionApp} style={navButtonStyle}>Render Indecision App</button>
-      <h1>Count: {count}</h1>
-      <button onClick={addOne}>+1</button>
-      <button onClick={minusOne}>-1</button>
-      <button onClick={reset}>reset</button>
-    </div>
-  );
-  ReactDOM.render(templateCounter, appRoot);
-};
-
-const renderIndecisionApp = () => {
-  const templateIndecision = (
-    <div>
-    <button onClick={renderCounterApp} style={navButtonStyle}>Render Counter App</button>
     <h1>{app.title}</h1>
       {app.subtitle && <p>{app.subtitle}</p>}
-      <p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
-      <ol>
-        <li>Item one</li>
-        <li>Item two</li>
-      </ol>
+      <br/>
+      {optionsList()}
+      <form onSubmit={onFormSubmit}>
+        <input type="text" name="option"/>
+        <button>Add Option</button>
+      </form>
     </div>
   );
-  ReactDOM.render(templateIndecision, appRoot);
+  ReactDOM.render(template, appRoot);
 };
 
-renderCounterApp();
+renderTemplate();
