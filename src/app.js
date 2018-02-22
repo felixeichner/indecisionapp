@@ -1,21 +1,18 @@
-const app = {
-  title: 'Indecision App',
-  subtitle: 'Hand your decision over to the computer...',
-  options: ["First Option", "Second Option", "Third Option"]
-};
-
 const liStyle = {
   marginBottom: 10
 };
 
 class IndecisionApp extends React.Component {
   render() {
+    const title = 'Indecision App';
+    const subtitle = 'Hand your decision over to the computer...';
+    let options = ["Learn JavaScript", "Eat proper food", "Go grocery shopping"];
     return (
       <div>
-        <Header />
-        <Action />
+        <Header title={title} subtitle={subtitle} />
+        <Action options={options} />
         <br />
-        <Options />
+        <Options options={options} />
       </div>
     );
   }
@@ -25,33 +22,49 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-        <h1>{app.title}</h1>
-        {app.subtitle && <h4>{app.subtitle}</h4>}
+        <h1>{this.props.title}</h1>
+        {this.props.subtitle && <h4>{this.props.subtitle}</h4>}
       </div>
     );
   }
 }
 
 class Action extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handlePick = this.handlePick.bind(this);
+  }
+  handlePick() {
+    const index = Math.floor(Math.random() * this.props.options.length);
+    alert(this.props.options[index]);
+  }
   render() {
     return (
       <div>
-        <button onClick={onMakeDecision}>What shall I do next?</button>
+        <button onClick={this.handlePick}>What shall I do next?</button>
       </div>
     );
-  }
+  }  
 }
 
 class Options extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+  }
+  handleRemoveAll() {
+    alert("Remove " + this.props.options);
+  }
   render() {
-    if (app.options.length > 0) {
+    if (this.props.options.length > 0) {
       return (
         <div>
+          <button onClick={this.handleRemoveAll}>Remove All</button>
           <h4>Your options:</h4>
           <ul>
-            <Option />
+            {this.props.options.map((option) => <Option key={option} option={option} options={this.props.options}/>)}
           </ul>
-          <AddOption />
+          <AddOption options={this.props.options}/>
         </div>
       );
     } else {
@@ -66,47 +79,49 @@ class Options extends React.Component {
 }
 
 class Option extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+  handleDelete() {
+    this.props.options.splice(this.props.options.indexOf(this.props.option), 1);
+    renderApp();
+  }
   render() {
     return (
-      app.options.map((option) => {
-        return (
-          <li key={option} style={liStyle}>
-            {option} <button onClick={() => {
-              app.options.splice(app.options.indexOf(option), 1);
-              renderApp();
-            }}>Delete</button>
-          </li>
-        );
-      })
+      <li style={liStyle}>
+        {this.props.option} <button onClick={this.handleDelete}>Delete</button>
+      </li>
     );
   }
 }
 
 class AddOption extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleAddOption = this.handleAddOption.bind(this);
+  }
+  
+  handleAddOption(e) {
+    e.preventDefault();
+    const option = e.target.elements.option.value.trim();
+    if (option) {
+      this.props.options.push(option);
+      e.target.elements.option.value = '';
+      renderApp();
+    }
+  };
   render() {
     return (
-      <form onSubmit={onFormSubmit}>
-        <input type='text' name='option'></input>
-        <button type='submit'>Add Option</button>
-      </form>
+      <div>
+        <form onSubmit={this.handleAddOption}>
+          <input type='text' name='option'></input>
+          <button type='submit'>Add Option</button>
+        </form>
+      </div>
     );
   }
 }
-
-const onMakeDecision = () => {
-  const index = Math.floor(Math.random() * app.options.length);
-  alert(app.options[index]);
-};
-
-const onFormSubmit = (e) => {
-  e.preventDefault();
-  const option = e.target.elements.option.value;
-  if (option) {
-    app.options.push(option);
-    e.target.elements.option.value = '';
-    renderApp();
-  }
-};
 
 const renderApp = () => ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
