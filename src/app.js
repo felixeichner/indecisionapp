@@ -74,76 +74,65 @@ class IndecisionApp extends React.Component {
   }
 }
 
-class Header extends React.Component {
-  render() {
+const Header = (props) => {
+  return (
+    <div>
+      <h1>{props.title}</h1>
+      {props.subtitle && <h4>{props.subtitle}</h4>}
+    </div>    
+  );
+};
+
+const Action = (props) => {
+  return (
+    <div>
+      <button 
+        onClick={props.handlePick}
+        disabled={!props.hasOptions}
+      >
+        What shall I do next?
+      </button>
+    </div>
+  );
+};
+
+const Options = (props) => {
+  if (props.options.length > 0) {
     return (
       <div>
-        <h1>{this.props.title}</h1>
-        {this.props.subtitle && <h4>{this.props.subtitle}</h4>}
+        <button onClick={props.handleDeleteOptions}>Remove All</button>
+        <h4>Your options:</h4>
+        <ul>
+          {props.options.map((option) => <Option 
+                                           key={option}
+                                           option={option}
+                                           options={props.options}
+                                           handleDeleteOption={props.handleDeleteOption}
+                                         />
+          )}
+        </ul>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h4>No options</h4>
       </div>
     );
   }
-}
+};
 
-class Action extends React.Component {
-  render() {
-    return (
-      <div>
-        <button 
-          onClick={this.props.handlePick}
-          disabled={!this.props.hasOptions}
-        >
-          What shall I do next?
-        </button>
-      </div>
-    );
-  }  
-}
-
-class Options extends React.Component {
-  render() {
-    if (this.props.options.length > 0) {
-      return (
-        <div>
-          <button onClick={this.props.handleDeleteOptions}>Remove All</button>
-          <h4>Your options:</h4>
-          <ul>
-            {this.props.options.map((option) => <Option 
-                                                  key={option}
-                                                  option={option}
-                                                  options={this.props.options}
-                                                  handleDeleteOption={this.props.handleDeleteOption}
-                                                />
-            )}
-          </ul>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <h4>No options</h4>
-        </div>
-      );
-    }
-  }
-}
-
-class Option extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDeleteOption = this.handleDeleteOption.bind(this);
-  }
-  handleDeleteOption() {
-    this.props.handleDeleteOption(this.props.option);
-  }
-  render() {
-    return (
-      <li style={liStyle}>
-        {this.props.option} <button onClick={this.handleDeleteOption}>Delete</button>
-      </li>
-    );
-  }
-}
+const Option = (props) => {
+  return (
+    <li style={liStyle}>
+      {props.option} <button
+                            onClick={props.handleDeleteOption.bind(this, props.option)}
+                          >
+                            Delete
+                          </button>
+    </li>
+  );
+};
 
 class AddOption extends React.Component {
   constructor(props) {
