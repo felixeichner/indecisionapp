@@ -1,0 +1,37 @@
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+.button {
+  padding: $s-size;
+  border-radius: $s-size;
+  background: $button-purple;
+  font-weight: bold;
+  color: $text-color;
+  box-shadow: 0 0 1px 1px $text-color;
+  border: .1rem solid darken($dark-purple, 10%);
+  word-break: keep-all;
+}
+
+.big-button {
+  padding: $s-size 7rem;
+  font-size: $lg-size;
+}
+
+.big-button:disabled {
+  opacity: 0.5;
+}
+
+.button--link {
+  border: none;
+  background: none;
+  padding: 0;
+  box-shadow: none;
+  font-size: $m-size;
+  color: $text-color;
+  margin-left: $m-size;
+}

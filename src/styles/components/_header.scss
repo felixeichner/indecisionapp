@@ -1,0 +1,17 @@
+.header {
+  background-color: $dark-purple;
+  text-align: center;
+  padding: $s-size;
+}
+
+.header__title {
+  font-size: $xl-size;
+  margin: 0 0 $s-size 0;
+  color: $text-color;
+}
+
+.header__subtitle {
+  font-size: $m-size;
+  margin: 0;
+  color: $subtitle-color;
+}

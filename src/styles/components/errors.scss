@@ -1,0 +1,9 @@
+.errorStyle {
+  background-color: darken($light-purple, 15%);
+  border-radius: none;
+  margin: 0;
+  padding: $s-size $s-size 0 $s-size;
+  display: flex;
+  color: $error-red;
+  font-weight: bold;
+};

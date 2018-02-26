@@ -1,7 +1,3 @@
-const errorStyle = {
-  color: 'red'
-}
-
 import React from 'react';
 
 export default class AddOption extends React.Component {
@@ -18,10 +14,10 @@ export default class AddOption extends React.Component {
   render() {
     return (
       <div>
-        {this.state.error && <p style={errorStyle}>{this.state.error}</p>}
-        <form onSubmit={this.handleAddOption}>
-          <input type='text' name='option'></input>
-          <button type='submit'>Add Option</button>
+        {this.state.error && <p className="errorStyle">{this.state.error}</p>}
+        <form onSubmit={this.handleAddOption} className="options-adder">
+          <input type='text' name='option' className="options-adder__input"></input>
+          <button type='submit' className="button">Add Option</button>
         </form>
       </div>
     );

@@ -5,9 +5,11 @@ const Options = (props) => {
   if (props.options.length > 0) {
     return (
       <div>
-        <button onClick={props.handleDeleteOptions}>Remove All</button>
-        <h4>Your options:</h4>
-        <ul>
+        <div className="options-header">
+          <h4>Your options:</h4>
+          <button onClick={props.handleDeleteOptions} className="button button--link">Remove All</button>
+        </div>
+        <ul className="options-list">
           {
             props.options.map((option) => (
               <Option 
@@ -23,8 +25,8 @@ const Options = (props) => {
     );
   } else {
     return (
-      <div>
-        <h4>No options</h4>
+      <div className="options-header">
+        <h4>Please add some options to choose from</h4>
       </div>
     );
   }

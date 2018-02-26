@@ -1,0 +1,10 @@
+.action {
+  text-align: center;
+  margin: $xxl-size 0;
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .action {
+    margin: $xl-size 0;
+  }
+}
